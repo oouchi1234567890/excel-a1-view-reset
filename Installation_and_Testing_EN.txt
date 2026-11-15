@@ -1,0 +1,261 @@
+Batch Excel A1 View Reset - English Edition
+Installation and Testing Guide / v1.1 EN
+
+ABOUT THIS PACKAGE
+This is VBA source for Windows desktop Excel, including English-language Excel.
+It uses ASCII-only source so importing the .bas file does not depend on a
+Japanese Windows code page. No Windows API declarations are used, so the code
+has no 32-bit versus 64-bit declaration requirements.
+
+This is not a ready-to-run .xlsm workbook. Complete the one-time installation
+below in the previously supplied control-sheet workbook. Static checks have
+been performed, but compilation and execution of this ENGLISH module,
+including in English-language Excel, have NOT been performed.
+
+Version 1.1 fixes runtime error 438 observed in Excel 2013 by using indexed
+Panes access instead of For Each enumeration. Use this version instead of
+v1.0. The corresponding Japanese source was compiled and tested with new
+disposable workbooks in Japanese Excel 2013; that is not an English-edition
+runtime test. File selection, confirmation, cancellation, and save conditions
+are unchanged.
+
+This edition is not intended for Excel for Mac, Excel for the web, or mobile
+Excel. It uses the Windows Scripting.FileSystemObject through late binding.
+No additional VBA reference needs to be selected for that object.
+
+PACKAGE CONTENTS
+1. A1Reset_EN.bas: ASCII source, CRLF line endings, no byte-order mark.
+2. A1Reset_EN_UTF8.txt: the same source as readable UTF-8 text.
+3. Installation_and_Testing_EN.txt: this guide.
+4. Static_Verification_EN.txt: the checks completed and their limits.
+
+ENGLISH-LANGUAGE COMPATIBILITY
+- The input sheet is named Control, and its folder input remains cell B6.
+- Setup recognizes the original Japanese input-sheet tab using Unicode code
+  points, not non-ASCII characters in the VBA source. It renames that tab to
+  Control and translates the existing control-sheet labels to English.
+- If a Control sheet already exists, that sheet is used. Keep only the intended
+  input layout under that name. If neither supported name exists, rename the
+  intended input sheet to Control before setup.
+- Setup does not erase B6. It adds or reuses one Run button over D10:H11.
+- VBA API names, cell addresses, file-extension checks, and numeric constants
+  do not depend on the Excel display language. The macro does not create
+  localized worksheet formulas or parse localized date text.
+- Paths are read from B6 or the folder picker. File-system path operations use
+  FileSystemObject rather than hard-coded localized folder names.
+- Existing target-file names, worksheet names, contents, and old result sheets
+  are not translated. Unicode file names remain data, not source code literals.
+- All comments, code-authored prompts, status labels, new result sheets, and
+  instructions are English. Excel/Windows native dialogs, built-in OK/Cancel
+  labels, and appended runtime-error descriptions follow their installed
+  language. The macro does not change the Office or Windows display language.
+
+WHAT THE MACRO DOES
+1. Read the target folder from Control!B6.
+2. Collect .xlsx, .xlsm, .xls, and .xlsb files directly inside that folder.
+   Extension matching is case-insensitive. Subfolders, temporary files whose
+   names start with ~$ , and the control workbook itself are excluded.
+   File ordering follows the system's case-insensitive text comparison.
+3. Show the total count and the first 30 file names, or all names if fewer.
+   Long names are kept in full by splitting the preview across dialog pages.
+   Each preview page has OK and Cancel. OK on a preview does not start work.
+4. Show a final confirmation that explicitly authorizes overwriting originals.
+   If there are more than 30 files, the number not shown is stated. ALL files
+   in the collected list are processed after confirmation, not just the first
+   30. Files added after the list was collected are left for the next run.
+5. Open each target workbook in turn. Visit its visible normal worksheets
+   from right to left, select A1, and scroll to the top-left position.
+   Finish on the leftmost visible normal worksheet.
+6. Save to the original file name and format only when all required view
+   changes for that workbook succeeded, then close it.
+7. Create a new A1Results_mmdd_hhnnss sheet in the control workbook, recording
+   every collected file, status, reason, and full path. Earlier result sheets
+   are retained. The control workbook is not saved automatically; save it
+   yourself if you want to retain the report.
+
+ONE-TIME INSTALLATION
+Use a separate EN copy if you want to retain the Japanese edition.
+
+1. Open the previously supplied control-sheet workbook in Windows Excel.
+2. Use File > Save As and choose Excel Macro-Enabled Workbook (*.xlsm).
+   Example: Excel_A1_Reset_EN.xlsm
+   Select the file type; do not merely change the file name extension.
+3. Press Alt+F11 to open the Visual Basic Editor.
+4. In Project Explorer, select the VBA project of that EN workbook.
+   If the Japanese A1Reset module is already installed in this copy, remove
+   that standard module first. You may export it if you want an extra copy.
+   Do not remove ThisWorkbook or any worksheet module.
+   Do not install both editions in the same project: the public macro names
+   are deliberately unchanged, and duplicates can cause ambiguous calls.
+5. Choose File > Import File and select A1Reset_EN.bas.
+   The standard module appears as A1Reset, even though the file name includes
+   EN. No manual editing of Japanese text or code-page settings is required.
+   Do not paste the source into ThisWorkbook or a worksheet code module.
+6. Choose Debug > Compile VBAProject. If compilation reports an error, do not
+   run the macro. Record the exact error and the highlighted line.
+7. Press Alt+F11 to return to Excel, then Alt+F8.
+   Select SetupA1ResetButton and click Run.
+   Setup changes only the control sheet: it renames the old input tab to
+   Control, translates its labels, and adds or reuses the Run button at
+   D10:H11. B6 is preserved. Target files are not opened by setup.
+8. Save this EN .xlsm workbook.
+9. Complete the small-copy tests below before using the macro on important
+   files. English-language Excel itself has not been tested here.
+
+If you use the text file instead of importing the .bas file, insert a standard
+module and paste the source without its first line:
+Attribute VB_Name = "A1Reset"
+That attribute belongs in an imported module file, not the editor text window.
+
+Do not enable all macros globally. Use only the control file you have reviewed
+and follow your organization's security policy. This setup does not need
+"Trust access to the VBA project object model." If the control file is blocked
+by Windows or organization policy, do not bypass the warning; consult your
+administrator.
+
+If you rename the control workbook later, run SetupA1ResetButton again and
+save it so that the button points to the current workbook name.
+
+OPTIONAL MACROS - NO EXTRA BUTTONS ARE CREATED
+- SelectTargetFolder: choose the folder using a dialog instead of typing B6.
+  Run it through Alt+F8 if wanted.
+- CancelA1Reset: request a stop at a file boundary. You may assign it to an
+  additional button yourself if wanted. Setup does not add such a button.
+- RunA1Reset: the main procedure assigned to the Run button.
+
+EVERYDAY USE
+1. Make your own backup copies in another folder. No backups are created by
+   this macro. Prefer trusted local copies, not synchronized shared originals.
+2. Close the target workbooks and stop concurrent editing. Avoid other Excel
+   operations while this batch is running.
+3. Enter the folder path in Control!B6, without a file name.
+   Example: C:\Users\user\Documents\A1_Reset_Targets
+   Alternatively, run SelectTargetFolder through Alt+F8.
+4. Click Run. Check the names, total count, folder, and overwrite warning.
+5. Choose OK on the final confirmation to start, or Cancel to stop beforehand.
+6. Review the results. A status of "Saved; close failed" counts both as saved
+   and as an error/warning, because the save succeeded but closing failed.
+
+CANCELLATION AND INTERRUPTION
+- Cancel on any preview or final confirmation: no target workbook is opened,
+  target files are unchanged, and no results sheet is created.
+- After processing starts: Esc can interrupt when Excel responds. Some Excel
+  operations may take time to respond. If interrupted before saving the
+  current workbook, it is closed without saving.
+- The optional CancelA1Reset procedure requests a stop at a file boundary;
+  the request is checked between files and again before a target save.
+- If interruption or an error occurs during saving, the save outcome may be
+  uncertain. The batch stops and does not retry; inspect the original file.
+- Files already saved are NOT rolled back. There is no batch-wide Undo.
+- Forced termination, VBE Reset/End, an Excel crash, or a power failure can
+  prevent cleanup and setting restoration. Check file states and safely
+  restart Excel if that happens.
+
+WORKSHEETS AND EXCLUSIONS
+- Hidden and VeryHidden sheets remain hidden and unchanged.
+- Chart sheets and other special sheets without a normal A1 are not reset.
+- Frozen panes remain frozen. Only the scrollable region is moved to its
+  earliest top-left position. Freeze positions, zoom, and row/column visibility
+  are not changed. Ordinary split windows have each pane reset to top-left.
+- Each visible window of a multi-window workbook is processed.
+- Protected sheets can be processed when A1 may be selected. No protection is
+  removed and no password is supplied. If any required sheet cannot select or
+  display A1, the entire workbook is closed without saving.
+- A hidden row 1 or column A, right-to-left display, or prohibited selection
+  causes the workbook to be skipped rather than changing those settings.
+- An already-open file, or another open workbook with the same name, is not
+  modified or closed by this routine.
+- Read-only files, locks, password requirements, legacy shared workbooks,
+  enabled AutoSave, document signatures, Excel 4.0 macro sheets, and external
+  data connections/QueryTables cause a skip or a failure before saving.
+- A changed file size or modification timestamp after preview/open causes
+  the macro not to save. This is not a complete concurrent-editing detector;
+  do not edit shared files concurrently during a run.
+- Folder paths longer than 300 characters are rejected before processing.
+  Excel itself may impose tighter file-path or file-name limits.
+- Errors before saving normally close that file without saving and continue
+  with the next file. Save or close errors stop the batch for inspection.
+- "Save unconfirmed" does not mean the original is unchanged. Inspect it.
+- The macro saves in place; it does not use Save As or automatically replace
+  files at a different destination.
+
+SECURITY AND ORIGINAL-FILE LIMITS
+This is not a malware scanner. Use only trusted local files.
+
+The code disables target VBA through AutomationSecurity, temporarily disables
+Excel events, and passes UpdateLinks:=0 when opening each workbook. Warnings
+are not globally suppressed. Changed application settings are restored during
+normal completion and handled errors.
+
+Excel 4.0/XLM macros are not fully disabled by the same VBA security setting.
+If a target macro or security warning appears, cancel it. Do not enable target
+macros or external content.
+
+UpdateLinks:=0 suppresses external workbook-link updates, not every external
+connection refresh. Connections and AutoSave are inspected after opening;
+that check cannot undo refreshes or other effects that occurred at open time.
+Avoid cloud-synchronized or concurrently edited originals.
+
+The target-operation code does not assign values, formulas, or formatting,
+but ordinary Excel opening/saving can recalculate formulas or update internal
+metadata and timestamps. Calculation mode and CalculateBeforeSave are left
+unchanged. Complete preservation or recovery of originals is not guaranteed,
+especially after a failed save or abrupt termination. Keep separate backups.
+
+TEST WITH COPIES
+Use a dedicated test folder, not original working files.
+
+1. Basic reset
+   In a copy with at least three sheets, select a cell such as Z100 on every
+   sheet and scroll down/right. Save and close. Run the macro, reopen, and
+   check every A1/top-left view and the final leftmost visible worksheet.
+2. Cancel before execution
+   Cancel on a preview, then separately on final confirmation. Check that
+   target modification times are unchanged and no results sheet is added.
+3. More than 30 files
+   Use 31 copies. Check the first-30 preview, total 31, and one unshown file.
+   Confirm and verify that all 31 are recorded and all normal copies reset.
+4. Long and Unicode names
+   Use long names with spaces and non-English characters. Confirm complete
+   names across preview pages and successful handling of supported paths.
+5. Extension and folder filtering
+   Test .xlsx/.xlsm/.xls/.xlsb, including uppercase extensions. Confirm that
+   .csv/.xltx/.xltm/.xlam/.tmp and files inside subfolders remain untouched.
+6. Hidden and chart sheets
+   Test Hidden, VeryHidden, and chart sheets. Confirm unchanged visibility
+   and charts, while the visible normal worksheets are reset.
+7. Frozen and split panes
+   Test top-row, left-column, and two-direction freezes, plus ordinary splits.
+   Confirm that freeze/split settings remain in place.
+8. Protection
+   Test A1-selectable protection and A1-selection-prohibited protection.
+   The prohibited case must not be saved.
+9. Already-open and read-only files
+   Confirm that already-open books are not modified or closed and that
+   read-only copies are not saved.
+10. Other edge cases
+   Test an empty folder, hidden row 1/column A, multiple windows, and an
+   inaccessible save destination using copies. Save errors must stop the
+   batch and be reported as "Save unconfirmed."
+11. Restored settings
+   After normal completion, interruption, and errors, check event handling,
+   screen updating, alerts, and other captured settings in Excel.
+12. English-language installation
+   In English Excel, import the ASCII .bas, compile, run setup on the original
+   input sheet, and confirm Control!B6, English labels, and the Run button.
+   Also check that the folder picker and final overwrite confirmation work.
+
+Begin with one to three small copies before any larger run.
+
+MICROSOFT REFERENCE DOCUMENTATION
+Workbooks.Open:
+https://learn.microsoft.com/en-us/office/vba/api/excel.workbooks.open
+AutomationSecurity, including the Excel 4.0 macro exception:
+https://learn.microsoft.com/en-us/office/vba/api/excel.application.automationsecurity
+Window.ScrollRow and Window.ScrollColumn:
+https://learn.microsoft.com/en-us/office/vba/api/excel.window.scrollrow
+https://learn.microsoft.com/en-us/office/vba/api/excel.window.scrollcolumn
+Worksheet.EnableSelection:
+https://learn.microsoft.com/en-us/office/vba/api/excel.worksheet.enableselection
+Workbook.AutoSaveOn:
+https://learn.microsoft.com/en-us/office/vba/api/excel.workbook.autosaveon

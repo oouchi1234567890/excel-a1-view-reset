@@ -1,0 +1,62 @@
+Batch Excel A1 View Reset - English Edition
+Static Verification Summary / v1.1 EN
+
+VERSION 1.1 CHANGE
+The two Panes enumerations in ResetSheetView now use indexed access. This
+fixes error 438 observed with the Japanese original in Excel 2013. Behavior
+and safety conditions are otherwise unchanged. Use v1.1 instead of v1.0.
+The corrected Japanese core passed small native Excel 2013 tests for normal
+3-sheet save/reopen, pre-run cancellation, and retained frozen panes.
+This English module and English-language Excel have NOT been runtime-tested.
+
+COMPLETED
+27 static and translated-logic checks passed, plus a source review.
+
+English-edition checks:
+- The .bas and text source are ASCII-only and contain identical code.
+- The .bas uses CRLF line endings and has no byte-order mark.
+- Control!B6 is the primary input location.
+- The Unicode code points correctly recognize the original Japanese input tab.
+- Setup translates the existing control labels and adds/reuses only one Run
+  button. It does not create optional folder-selection or stop buttons.
+- English result/status strings match the summary-counting logic.
+- The processing, error-handling, and restoration control flow in 16 core
+  procedures matches the Japanese original, ignoring translated text and the
+  explicit control-sheet resolver substitution.
+- The final English confirmation is 802 characters at the maximum accepted
+  folder length and reportable file count, below the approximate MsgBox limit.
+- The new control-sheet resolver and setup changes were reviewed separately.
+
+Other checks:
+- Procedure boundaries, unique names, local GoTo labels, terminated strings,
+  physical line length, and line-continuation limits.
+- Confirmation precedes target opening and result-sheet creation.
+- Four included extensions, self/temporary-file exclusions, no recursion.
+- Translated sorting logic checked with 1/2/29/30/31/100/2000 entries.
+- Long-name preview logic retains complete names for the first 30 entries.
+- The processing loop uses the total count, not the preview count.
+- Reverse worksheet traversal, A1 selection, and scrolling instructions.
+- One target-save instruction on the successful path; no automatic retry.
+- Read-only, already-open, lock, AutoSave, signature, and related guards.
+- Target-VBA/event/link suppression and application-setting restoration.
+- No automatic backups, target-file deletion, Save As, or shell execution.
+- Both Panes loops use indexed access, without unsupported enumeration.
+
+NOT PERFORMED
+- Compilation in Microsoft Excel or the Visual Basic Editor.
+- Execution in English-language Excel or any other Excel language edition.
+- Opening, changing, saving, or reopening actual target workbooks.
+- Real-Excel tests of protection, panes, multiple windows, locks, save failures,
+  native dialog layout, or restoration after abrupt termination.
+- Mac/web/mobile compatibility testing; those platforms are outside scope.
+
+Static checks and logic models are not a VBA compiler or an Excel runtime test.
+No claim of verified English-Excel runtime compatibility is made. The source
+was prepared to avoid Japanese code-page and worksheet-name dependencies;
+complete installation and test one to three small local copies in your actual
+Excel installation before broader use.
+
+The original limits still apply: refresh-on-open cannot be fully controlled,
+Excel 4.0 macros need separate caution, ordinary opening/saving may recalculate,
+and a failed save can leave an uncertain outcome. No automatic backup or
+batch-wide rollback is provided. See Installation_and_Testing_EN.txt.
