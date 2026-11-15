@@ -33,10 +33,8 @@
 
 ## 配布ファイル
 
-- [日本語版のマクロ入りExcelファイル](./A1表示調整_日本語.xlsm)
-- [英語版のマクロ入りExcelファイル](./A1_View_Reset_EN_v1_1.xlsm)
-- [日本語版VBA一式 v1.1](./Excel_A1表示調整_VBA一式_v1_1.zip)
-- [英語版VBA一式 v1.1](./Excel_A1_Reset_VBA_EN_v1_1.zip)
+- [日本語版のマクロ入りExcelファイル](https://github.com/oouchi1234567890/excel-a1-view-reset/raw/main/A1表示調整_日本語.xlsm)
+- [英語版のマクロ入りExcelファイル](https://github.com/oouchi1234567890/excel-a1-view-reset/raw/main/A1_View_Reset_EN_v1_1.xlsm)
 
 通常は、使用したい言語のマクロ入りExcelファイルを開いて使います。英語版は実行未検証です。詳しくは「注意事項・動作確認」をご覧ください。
 

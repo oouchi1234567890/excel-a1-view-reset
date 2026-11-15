@@ -33,10 +33,8 @@ So I thought I'd share a tool that does just this one thing. I hope it makes som
 
 ## Downloads
 
-- [Japanese macro-enabled Excel workbook](./A1表示調整_日本語.xlsm)
-- [English macro-enabled Excel workbook](./A1_View_Reset_EN_v1_1.xlsm)
-- [Japanese VBA package v1.1](./Excel_A1表示調整_VBA一式_v1_1.zip)
-- [English VBA package v1.1](./Excel_A1_Reset_VBA_EN_v1_1.zip)
+- [Japanese macro-enabled Excel workbook](https://github.com/oouchi1234567890/excel-a1-view-reset/raw/main/A1表示調整_日本語.xlsm)
+- [English macro-enabled Excel workbook](https://github.com/oouchi1234567890/excel-a1-view-reset/raw/main/A1_View_Reset_EN_v1_1.xlsm)
 
 For normal use, open the macro-enabled workbook in your preferred language. The English version has not been execution-tested. See "Notes and Testing Status" for details.
 
